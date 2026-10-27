@@ -1,0 +1,26 @@
+{
+  "name": "clase-10",
+  "version": "1.0.0",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "node ./src/main.js",
+    "dev": "node --watch ./src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "matu.dev",
+  "license": "ISC",
+  "type": "module",
+  "description": "Proyecto de prueba para conectarnos a mongoDB desde node.js",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.10.1",
+    "mysql2": "^3.24.6",
+    "nodemailer": "^10.1.0",
+    "uuid": "^14.0.2"
+  }
+}
