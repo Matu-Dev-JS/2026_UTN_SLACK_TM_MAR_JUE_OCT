@@ -3,6 +3,11 @@ import useForm from '../../hooks/useForm'
 import { login } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
 
+/* 
+Siguiendo las practicas implementadas la conectar el formulario de login con nuesta API REST
+Desarrollar la implementacion del formulario de registro y la consulta a la API REST
+*/
+
 function LoginScreen() {
     
     const initial_state = {email: '', password: ''}
