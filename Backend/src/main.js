@@ -1,6 +1,6 @@
 import connectMongoDB from "./config/mongo.config.js";
 
-connectMongoDB()
+//connectMongoDB()
 
 
 import express from 'express'
@@ -18,6 +18,19 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+app.use(async (req, res, next) => {
+    try {
+        await connectMongoDB();
+        next();
+    } catch (error) {
+        console.error("Error conectando MongoDB:", error);
+
+        res.status(503).json({
+            message: "No se pudo conectar a la base de datos"
+        });
+    }
+});
 
 
 app.use('/api/auth', auth_router)

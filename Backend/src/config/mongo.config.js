@@ -1,22 +1,29 @@
 import mongoose from "mongoose";
 import ENVIRONMENT from "./environment.config.js";
 
-async function connectMongoDB () {
-    try{
-        await mongoose.connect(
-            `${ENVIRONMENT.MONGO_DB_URI}/${ENVIRONMENT.MONGO_DB_NAME}`
-        )
-        console.log('Conexion a MongoDB exitosa!')
-    }
-    catch(error){
-        console.error('Error critico al conectar al MongoDB', error.message)
+let connectionPromise = null;
 
-        /* Crasheo controlado */
-        process.exit(1) 
+async function connectMongoDB() {
+    if (mongoose.connection.readyState === 1) {
+        
+        return mongoose.connection;
     }
+
+    if (!connectionPromise) {
+        connectionPromise = mongoose.connect(
+            `${ENVIRONMENT.MONGO_DB_URI}/${ENVIRONMENT.MONGO_DB_NAME}`,
+            {
+                serverSelectionTimeoutMS: 10000
+            }
+        ).catch(error => {
+            connectionPromise = null;
+            throw error;
+        });
+    }
+
+    await connectionPromise;
+
+    return mongoose.connection;
 }
 
-export default connectMongoDB
-
-
-
+export default connectMongoDB;
