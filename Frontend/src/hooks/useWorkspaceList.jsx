@@ -13,7 +13,7 @@ function useWorkspaceList (){
         },
         []
     )
-
+    
     function reloadWorkspaces() {
         sendRequest(
             () => getAllWorkspaces()

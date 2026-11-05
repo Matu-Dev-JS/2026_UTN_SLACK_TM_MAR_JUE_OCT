@@ -2,7 +2,7 @@
 Interaccion con la API
 */
 
-const API_URL = 'http://localhost:8080'
+const API_URL = import.meta.env.VITE_APP_URL_BACKEND
 
 export async function login (email, password){
     const response_http = await fetch(
