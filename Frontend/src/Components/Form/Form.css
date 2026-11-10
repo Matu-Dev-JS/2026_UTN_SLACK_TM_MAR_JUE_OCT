@@ -1,0 +1,184 @@
+/*
+  Estilos de formularios de la aplicacion (reutilizables en Register,
+  Login, etc.). Consume las variables de globals.css.
+*/
+
+/* ---------- Layout de pantalla (fondo + tarjeta centrada) ---------- */
+
+.form-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background-color: var(--surface);
+}
+
+.form-card {
+  width: 100%;
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+}
+
+.form-title {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+  white-space: nowrap; /* titulo siempre en una linea */
+  margin-bottom: 4px;
+}
+
+.form-logo {
+  display: block;
+  margin: 0 auto 12px;
+}
+
+.form-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* ---------- Formulario ---------- */
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 483px; /* los campos tienen limite aunque el card no */
+  margin: 0 auto;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.form-field__input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  font-size: 1rem; /* evita zoom automatico en iOS */
+  font-family: inherit;
+  color: var(--ink);
+  background-color: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field__input:hover:not(:focus) {
+  border-color: var(--border-strong);
+}
+
+.form-field__input:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px var(--brand),
+    0 0 0 5px color-mix(in srgb, var(--brand) 30%, transparent);
+}
+
+/* ---------- Boton primario ---------- */
+
+.form-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--brand);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.05s ease;
+}
+
+.form-btn:hover:not(:disabled) {
+  background-color: var(--brand-dark);
+}
+
+.form-btn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.form-btn:focus-visible {
+  outline: 3px solid var(--brand-soft);
+  outline-offset: 2px;
+}
+
+.form-btn:disabled {
+  opacity: 0.75;
+  cursor: progress;
+}
+
+.form-btn__spinner {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: form-spin 0.7s linear infinite;
+}
+
+@keyframes form-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Pie: link a otra pantalla ---------- */
+
+.form-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-footer a {
+  color: var(--brand);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Responsive (pantallas pequeñas) ---------- */
+
+@media (max-width: 480px) {
+  .form-screen {
+    padding: 16px 12px;
+  }
+
+  .form-card {
+    padding: 24px 20px;
+    border-radius: 14px;
+  }
+
+  /* 48px se escriba en una sola linea, en pantallas pequeñas se escala
+     para que quepa sin desbordar el card (mantiene la misma linea). */
+  .form-title {
+    font-size: 7vw;
+  }
+}

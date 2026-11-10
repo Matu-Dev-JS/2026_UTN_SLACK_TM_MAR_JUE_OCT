@@ -1,0 +1,63 @@
+/*
+  Variables y estilos globales de la aplicacion.
+  Paleta inspirada en Slack con color principal #481A54 (aubergine).
+*/
+
+/* Fuente Open Sans (recurso externo, sin librerias) */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+  /* Color de marca */
+  --brand: #481A54;
+  --brand-dark: #360F41;
+  --brand-soft: rgba(72, 26, 84, 0.15);
+
+  /* Texto */
+  --ink: #181818;
+  --text-muted: #616061;
+
+  /* Superficies y bordes */
+  --surface: #FFFFFF;
+  --surface-muted: #FFFFFF;
+  --border: #DBD6DE;
+  --border-strong: #B4AABD;
+
+  /* Semanticos */
+  --error-color: #E01E5A;
+  --error-bg: #FBEDF0;
+  --error-ink: #8F1239;
+  --success-color: #2BAC76;
+  --success-bg: #EBF9F1;
+  --success-ink: #1D6E4B;
+  --info-color: #1264A3;
+  --info-bg: #EDF2F9;
+  --info-ink: #17527D;
+
+  /* Formas */
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+
+  /* Tipografia */
+  --font-stack: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-stack);
+  color: var(--ink);
+  background-color: var(--surface-muted);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}

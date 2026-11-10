@@ -1,0 +1,79 @@
+/*
+  Alertas inline (variables semanticas definidas en globals.css).
+  Aparecen dentro del flujo del formulario y empujan el contenido,
+  sin overlay ni modal.
+*/
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.925rem;
+  line-height: 1.45;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  text-align: left;
+  animation: alert-in 0.25s ease-out;
+}
+
+/* Indicador visual a la izquierda compatible con la flexbox del banner */
+.alert::before {
+  flex-shrink: 0;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.alert--error {
+  background-color: var(--error-bg);
+  border-color: rgba(224, 30, 90, 0.35);
+  border-left: 4px solid var(--error-color);
+  color: var(--error-ink);
+}
+
+.alert--error::before {
+  content: '⚠';
+  color: var(--error-color);
+}
+
+.alert--success {
+  background-color: var(--success-bg);
+  border-color: rgba(43, 172, 118, 0.35);
+  border-left: 4px solid var(--success-color);
+  color: var(--success-ink);
+}
+
+.alert--success::before {
+  content: '✓';
+  color: var(--success-color);
+}
+
+.alert--info {
+  background-color: var(--info-bg);
+  border-color: rgba(18, 100, 163, 0.3);
+  border-left: 4px solid var(--info-color);
+  color: var(--info-ink);
+}
+
+.alert--info::before {
+  content: 'ⓘ';
+  color: var(--info-color);
+}
+
+@keyframes alert-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alert {
+    animation: none;
+  }
+}
