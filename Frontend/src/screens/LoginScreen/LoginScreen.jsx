@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router'
 import useForm from '../../hooks/useForm'
 import { login } from '../../services/authService'
 import useRequest from '../../hooks/useRequest'
-import {useNavigate} from 'react-router'
+import { useNavigate } from 'react-router'
+import TextField from '../../Components/Form/TextField'
+import FormButton from '../../Components/Form/FormButton'
+import Alert from '../../Components/Alert/Alert'
 
-/* 
+/*
 Siguiendo las practicas implementadas la conectar el formulario de login con nuesta API REST
 Desarrollar la implementacion del formulario de registro y la consulta a la API REST
 */
 
 function LoginScreen() {
-    
+
     const initial_state = {email: '', password: ''}
     const {formState, handleChangeInput} = useForm(initial_state)
     const {loading, response, error, sendRequest} = useRequest()
-    
+
     const navigate = useNavigate()
-   
+
 
     async function handleSubmit (event){
         event.preventDefault()
@@ -26,7 +30,7 @@ function LoginScreen() {
         console.log('Usuario intenta iniciar sesion', formState)
     }
 
-    /* 
+    /*
     Los efectos sirven para controlar la recarga/ejecucion de una funcion
 
     Cuando la response cambie/llegue:
@@ -43,51 +47,57 @@ function LoginScreen() {
         [response]
     )
 
-    
-    
+
+
     return (
-        <div>
-            <h1>Inciar sesion</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input 
-                        name='email' 
-                        id='email' 
-                        type='email' 
-                        value={formState.email} 
-                        onChange={handleChangeInput} 
+        <div className='form-screen'>
+            <div className='form-card'>
+                <img
+                    className='form-logo'
+                    alt='Slack'
+                    height='26'
+                    title='Slack'
+                    src='https://a.slack-edge.com/bv1-13/slack_logo-97f7334.svg'
+                />
+                <h1 className='form-title'>Iniciar sesión</h1>
+                <p className='form-subtitle'>Ingresá con tu cuenta para volver a trabajar</p>
+                <form className='form-stack' onSubmit={handleSubmit}>
+                    <TextField
+                        name='email'
+                        label='Email:'
+                        type='email'
+                        value={formState.email}
+                        onChange={handleChangeInput}
+                        autoComplete='email'
                     />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input 
-                        name='password' 
-                        id='password' 
-                        type='password' 
-                        value={formState.password} 
-                        onChange={handleChangeInput} 
+                    <TextField
+                        name='password'
+                        label='Password:'
+                        type='password'
+                        value={formState.password}
+                        onChange={handleChangeInput}
+                        autoComplete='current-password'
                     />
-                </div>
-                {
-                    error
-                    && 
-                    !loading 
-                    && 
-                    <span style={{color: 'red'}}>{error}</span>
-                }
+                    {
+                        error
+                        &&
+                        !loading
+                        &&
+                        <Alert type='error'>{error}</Alert>
+                    }
 
-                {
-                    loading
-                    ? <button type='submit' disabled={true} >Cargando...</button>
-                    : <button type='submit'>Iniciar sesion</button>
-                }
-                
+                    <FormButton loading={loading} loadingText='Iniciando sesión…'>Iniciar sesión</FormButton>
 
-                {
-                    response && !loading && <span style={{color: 'greenyellow'}}>Inicio de sesion exitoso</span>
-                }
-            </form>
+                    {
+                        response && !loading && <Alert type='success'>Inicio de sesion exitoso</Alert>
+                    }
+                </form>
+                <p className='form-footer'>
+                    ¿No recibiste el mail de verificación? <Link to='/resend-email-verification'>Reenviar verificación</Link>
+                    <br />
+                    ¿No tenés cuenta? <Link to='/register'>Registrate</Link>
+                </p>
+            </div>
         </div>
     )
 }

@@ -12,12 +12,14 @@ const ENVIRONMENT = {
     GMAIL_USER: process.env.GMAIL_USER,
     GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
     URL_BACKEND: process.env.URL_BACKEND,
+    URL_FRONTEND: process.env.URL_FRONTEND,
     MYSQL_DB_HOST: process.env.MYSQL_DB_HOST,
     MYSQL_DB_USER: process.env.MYSQL_DB_USER,
     MYSQL_DB_PASSWORD: process.env.MYSQL_DB_PASSWORD,
     MYSQL_DB_PORT: process.env.MYSQL_DB_PORT,
     MYSQL_DB_NAME: process.env.MYSQL_DB_NAME,
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    URL_FRONTEND: process.env.URL_FRONTEND
 }
 
 export default ENVIRONMENT

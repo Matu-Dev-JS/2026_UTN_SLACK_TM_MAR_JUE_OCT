@@ -9,7 +9,7 @@ import './Form.css'
   Uso:
     <FormButton loading={loading}>Registrarse</FormButton>
 */
-function FormButton({ loading = false, disabled = false, children }) {
+function FormButton({ loading = false, disabled = false, loadingText = 'Cargando…', children }) {
   return (
     <button
       type='submit'
@@ -19,7 +19,7 @@ function FormButton({ loading = false, disabled = false, children }) {
       {loading ? (
         <>
           <span className='form-btn__spinner' aria-hidden='true'></span>
-          Registrando…
+          {loadingText}
         </>
       ) : (
         children

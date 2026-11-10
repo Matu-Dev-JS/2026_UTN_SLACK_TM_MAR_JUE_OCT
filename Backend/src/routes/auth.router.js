@@ -1,5 +1,5 @@
 import express from 'express'
-import { login, register, verifyEmail } from '../controllers/auth.controller.js'
+import { login, register, verifyEmail, resendVerificationEmail } from '../controllers/auth.controller.js'
 
 const auth_router = express.Router()
 
@@ -13,6 +13,12 @@ Cuando un usuario inicia sesion debemos crear de alguna forma la sesion
 */
 auth_router.post('/login', login)
 
-auth_router.get('/verify-email/:verify_email_token',  verifyEmail)
+auth_router.get('/verify-email',  verifyEmail)
+
+/*
+Reenvio de verificacion: recibimos un email valido y le re-creamos
+un token para enviarle devuelta el mail de verificacion
+*/
+auth_router.get('/verify-email/:email/resend',  resendVerificationEmail)
 
 export default auth_router

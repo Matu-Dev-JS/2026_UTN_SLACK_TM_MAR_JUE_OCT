@@ -64,7 +64,7 @@ function RegisterScreen() {
             &&
             <Alert type='error'>{error}</Alert>
           }
-          <FormButton loading={loading}>Registrarse</FormButton>
+          <FormButton loading={loading} loadingText='Registrando…'>Registrarse</FormButton>
           {
             response
             &&
