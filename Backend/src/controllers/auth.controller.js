@@ -87,3 +87,37 @@ export async function resendVerificationEmail (request, response){
         }
     )
 }
+
+
+export async function forgotPassword (request, response){
+    const {email} = request.body
+
+    //El servicio valida el email y decide si corresponde enviar el mail de restablecimiento
+    await auth_services.forgotPassword(email)
+
+    return response.status(200).send(
+        {
+            ok: true,
+            status: 200,
+            message: 'Se enviara un mail con los pasos para restablecer la contrasena en caso de que esta cuenta sea real'
+        }
+    )
+}
+
+
+export async function resetPassword (request, response){
+    //El token viene desde el link del mail (querystring del FRONTEND)
+    //y la nueva password desde el formulario de restablecimiento
+    const {reset_token, password} = request.body
+
+    //El servicio valida el token, busca al usuario y guarda la nueva password encriptada
+    await auth_services.resetPassword(reset_token, password)
+
+    return response.status(200).send(
+        {
+            ok: true,
+            status: 200,
+            message: 'Contrasena restablecida exitosamente, ya podes iniciar sesion con tu nueva contrasena'
+        }
+    )
+}

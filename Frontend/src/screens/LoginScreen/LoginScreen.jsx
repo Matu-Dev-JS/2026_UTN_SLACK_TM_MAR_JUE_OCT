@@ -93,6 +93,8 @@ function LoginScreen() {
                     }
                 </form>
                 <p className='form-footer'>
+                    ¿Olvidaste tu contrasena? <Link to='/forgot-password'>Recuperala aca</Link>
+                    <br />
                     ¿No recibiste el mail de verificación? <Link to='/resend-email-verification'>Reenviar verificación</Link>
                     <br />
                     ¿No tenés cuenta? <Link to='/register'>Registrate</Link>
