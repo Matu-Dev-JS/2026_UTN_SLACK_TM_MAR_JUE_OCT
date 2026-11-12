@@ -15,7 +15,7 @@
 }
 
 .form-card {
-  width: 100%;
+  width: 60%; /* el card del formulario ocupa el 60% en computadoras */
   background-color: var(--surface);
   border-radius: var(--radius-lg);
   padding: 36px;
@@ -88,6 +88,48 @@
   box-shadow:
     0 0 0 1px var(--brand),
     0 0 0 5px color-mix(in srgb, var(--brand) 30%, transparent);
+}
+
+/* ---------- Textarea (descripcion) ---------- */
+
+.form-field__textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--ink);
+  background-color: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field__textarea:hover:not(:focus) {
+  border-color: var(--border-strong);
+}
+
+.form-field__textarea:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px var(--brand),
+    0 0 0 5px color-mix(in srgb, var(--brand) 30%, transparent);
+}
+
+.form-field__counter {
+  align-self: flex-end;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Titulo largo: permite el salto de linea en vez de una sola linea */
+.form-title--wrap {
+  white-space: normal;
+  font-size: 2rem;
 }
 
 /* ---------- Boton primario ---------- */
@@ -165,6 +207,13 @@
 }
 
 /* ---------- Responsive (pantallas pequeñas) ---------- */
+
+/* En pantallas de 750px para abajo el card del formulario vuelve a ocupar todo el ancho */
+@media (max-width: 750px) {
+  .form-card {
+    width: 100%;
+  }
+}
 
 @media (max-width: 480px) {
   .form-screen {
