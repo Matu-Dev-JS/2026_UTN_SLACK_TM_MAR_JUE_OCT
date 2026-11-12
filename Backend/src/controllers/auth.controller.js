@@ -91,7 +91,7 @@ export async function resendVerificationEmail (request, response){
 
 export async function forgotPassword (request, response){
     const {email} = request.body
-
+    console.log("HOLA")
     //El servicio valida el email y decide si corresponde enviar el mail de restablecimiento
     await auth_services.forgotPassword(email)
 
