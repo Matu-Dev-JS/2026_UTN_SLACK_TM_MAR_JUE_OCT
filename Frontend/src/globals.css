@@ -14,6 +14,7 @@
 
   /* Texto */
   --ink: #181818;
+  --text-primary: #1D1C1D; /* Color de tinta de Slack para titulos/tab/flechas */
   --text-muted: #616061;
 
   /* Superficies y bordes */

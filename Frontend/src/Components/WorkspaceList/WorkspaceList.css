@@ -1,0 +1,159 @@
+/*
+Lista de espacios de trabajo estilo Slack:
+tarjeta con header, filas de workspaces con avatar, iniciales de miembros y flecha.
+*/
+
+.workspace-list-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  max-width: 720px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Header con titulo subrayado */
+.workspace-list-header {
+  display: flex;
+  align-items: flex-end;
+  padding: 16px 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.workspace-list-header h2 {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding-bottom: 12px;
+  /* El borde inferior de la tab queda pegado (solapado 1px) al borde del header */
+  margin-bottom: -1px;
+  border-bottom: 3px solid #730394;
+}
+
+/* Cuerpo con scroll */
+.workspace-list-body {
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 12px 24px;
+}
+
+.workspace-list-message {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.workspace-list-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 8px 0 4px;
+}
+
+/* Filas de espacios de trabajo */
+.workspace-list-items {
+  list-style: none;
+}
+
+.workspace-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 8px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.workspace-item:hover {
+  background-color: rgba(72, 26, 84, 0.06);
+}
+
+.workspace-item-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.workspace-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.workspace-item-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Fila de iniciales de miembros + contador */
+.workspace-item-members {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.workspace-member-initial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid var(--surface);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.workspace-item-members-count {
+  margin-left: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.workspace-item-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+/* Footer con acciones */
+.workspace-list-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+.workspace-list-footer-link,
+.workspace-list-footer-help a {
+  color: var(--info-color);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.workspace-list-footer-link:hover,
+.workspace-list-footer-help a:hover {
+  text-decoration: underline;
+}
+
+.workspace-list-footer-help {
+  font-size: 14px;
+  color: var(--text-primary);
+}
