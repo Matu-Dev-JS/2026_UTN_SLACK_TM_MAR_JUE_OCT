@@ -3,6 +3,7 @@ import {
     getAllWorkspaces,
     createWorkspace,
     getWorkspaceById,
+    getWorkspaceMembers,
     deleteWorkspaceById,
     updateWorkspaceById
 } from '../controllers/workspace.controller.js'
@@ -24,6 +25,17 @@ workspace_router.get(
     authMiddleware,
     workspaceMiddleware([]),
     getWorkspaceById
+)
+
+/*
+(Autentified, todos) GET /api/workspaces/:workspace_id/members
+    Traer la lista de miembros (membresias) asociadas a un espacio de trabajo
+*/
+workspace_router.get(
+    '/:workspace_id/members',
+    authMiddleware,
+    workspaceMiddleware([]),
+    getWorkspaceMembers
 )
 
 workspace_router.delete(

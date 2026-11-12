@@ -8,6 +8,8 @@ import ResendEmailVerificationScreen from './screens/ResendEmailVerificationScre
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen/ForgotPasswordScreen'
 import ResetPasswordScreen from './screens/ResetPasswordScreen/ResetPasswordScreen'
 import CreateWorkspaceScreen from './screens/CreateWorkspaceScreen/CreateWorkspaceScreen'
+import WorkspaceScreen from './screens/WorkspaceScreen/WorkspaceScreen'
+import { WorkspaceProvider } from './Contexts/WorkspaceContext'
 import AuthMiddleware from './Middlewares/AuthMiddleware'
 
 const App = () => {
@@ -26,6 +28,14 @@ const App = () => {
         <Route 
           path='/workspaces/new' 
           element={<CreateWorkspaceScreen/>}
+        />
+        <Route 
+          path='/workspace/:workspace_id' 
+          element={
+            <WorkspaceProvider>
+              <WorkspaceScreen/>
+            </WorkspaceProvider>
+          }
         />
 
       </Route>

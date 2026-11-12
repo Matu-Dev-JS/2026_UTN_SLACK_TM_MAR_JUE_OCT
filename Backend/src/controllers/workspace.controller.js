@@ -61,6 +61,20 @@ export async function getWorkspaceById (request, response) {
     })
 }
 
+export async function getWorkspaceMembers (request, response) {
+    //El servicio busca la lista de membresias del workspace
+    const members_obtenidos = await workspace_services.getMembersByWorkspaceId(request.workspace._id)
+
+    return response.status(200).send({
+        ok: true,
+        message: "Miembros obtenidos correctamente",
+        status: 200,
+        data: {
+            members: members_obtenidos
+        }
+    })
+}
+
 export async function deleteWorkspaceById (request, response) {
     //El servicio elimina el workspace y todas sus membresias
     await workspace_services.deleteWorkspaceWithMemberships(request.workspace._id)

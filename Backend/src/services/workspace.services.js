@@ -58,6 +58,14 @@ export async function createWorkspaceWithOwner(name, description, user_id) {
 }
 
 /*
+GET MEMBERS (lógica del endpoint GET /api/workspaces/:workspace_id/members)
+trae la lista de miembros (membresias) asociadas a un espacio de trabajo
+*/
+export async function getMembersByWorkspaceId(workspace_id) {
+    return await member_repository.getAllMembershipsByWorkspaceId(workspace_id)
+}
+
+/*
 DELETE WORKSPACE (lógica del endpoint DELETE /api/workspace/:workspace_id)
 1. elimina el workspace
 2. elimina todas las membresias asociadas a ese workspace
