@@ -21,6 +21,8 @@
     "mongoose": "^9.10.1",
     "mysql2": "^3.24.6",
     "nodemailer": "^10.1.0",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^14.0.2"
   }
 }
