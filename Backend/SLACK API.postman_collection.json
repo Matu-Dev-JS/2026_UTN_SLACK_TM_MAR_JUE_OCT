@@ -1,0 +1,307 @@
+{
+  "info": {
+    "_postman_id": "016635df-9840-4cce-adb1-e4fc822aa046",
+    "name": "SLACK API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22101868",
+    "_collection_link": "https://go.postman.co/collection/22101868-016635df-9840-4cce-adb1-e4fc822aa046?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "/api/auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "/* \r\nEn postman podemos ejecutar codigo de JS \r\nEste se puede ejecutar antes o despues de la consulta, en este caso es \"AFTER RESPONSE\" despues de la consulta.\r\nQueremos que de la respuesta se cree una variable temporal de postman con el token de acceso para no tener que manejarlo a mano\r\n*/\r\n\r\nlet response = pm.response\r\n\r\nlet responseJSON = response.json()\r\n\r\nconsole.log('Hola mundo desde postman', responseJSON.data.auth_token)"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\": \"Pepito1234\",\r\n    \"email\": \"prueba.utn.mail@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL_API}}/api/auth/login",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"Pepito\",\r\n    \"password\": \"Pepito1234\",\r\n    \"email\": \"pepito6@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL_API}}/api/auth/register",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/api/users",
+      "item": [
+        {
+          "name": "Obtener usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/api/users",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/api/users/:user_id",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ":user_id"
+              ],
+              "variable": [
+                {
+                  "key": "user_id",
+                  "value": "6aabfd4d5f848b9d98808f0f"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/api/workspaces",
+      "item": [
+        {
+          "name": "Obtener por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/api/workspaces/:workspace_id",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ":workspace_id"
+              ],
+              "variable": [
+                {
+                  "key": "workspace_id",
+                  "value": "6ab2729b3784a8b4ecb9936e"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar workpsace por id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/api/workspaces/:workspace_id",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ":workspace_id"
+              ],
+              "variable": [
+                {
+                  "key": "workspace_id",
+                  "value": "6ad763657c708543fb438ac4"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar espacio de trabajo",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"test actualizado\",\r\n    \"description\": \"Test descripcion\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL_API}}/api/workspaces/:workspace_id",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ":workspace_id"
+              ],
+              "variable": [
+                {
+                  "key": "workspace_id",
+                  "value": "6ad9ff3c788228c93a0e8560"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener espacios de trabajo",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL_API}}/api/workspaces/",
+              "host": [
+                "{{URL_API}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Create workspace",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Test REAL\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{URL_API}}/api/workspaces",
+          "host": [
+            "{{URL_API}}"
+          ],
+          "path": [
+            "api",
+            "workspaces"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
