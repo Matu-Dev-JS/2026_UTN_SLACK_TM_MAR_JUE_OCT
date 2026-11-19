@@ -8,7 +8,19 @@ y delega toda esta logica acá.
 
 import workspace_repository from "../repositories/workspace.repository.js"
 import member_repository from "../repositories/member.repository.js"
+import user_repository from "../repositories/user.repository.js"
 import ServerError from "../utils/error.util.js"
+
+/*
+Roles que cada rol de quien crea la membresia puede asignar.
+- owner: puede crear 'admin' y 'user'
+- admin: solo puede crear 'user'
+El rol 'owner' no se asigna nunca desde este endpoint.
+*/
+const ASSIGNABLE_ROLES_BY_CALLER = {
+    owner: ['admin', 'user'],
+    admin: ['user']
+}
 
 /*
 GET ALL WORKSPACES (lógica del endpoint GET /api/workspace)
@@ -55,6 +67,42 @@ export async function createWorkspaceWithOwner(name, description, user_id) {
         workspace_created,
         owner_membership
     }
+}
+
+/*
+CREATE MEMBER (lógica del endpoint POST /api/workspaces/:workspace_id/members)
+1. valida los datos
+2. valida que quien crea la membresia pueda asignar ese rol (sino 403)
+3. valida que exista un usuario con ese email
+4. valida que el usuario no sea ya miembro del workspace
+5. crea la membresia
+*/
+export async function createWorkspaceMember(email, workspace_id, rol, caller_role) {
+    if (!email || !rol) {
+        throw new ServerError("email y rol son campos requeridos", 400)
+    }
+
+    //owner puede asignar 'admin' o 'user'; admin solo 'user'. Cualquier otro rol se rechaza
+    const assignable_roles = ASSIGNABLE_ROLES_BY_CALLER[caller_role] || []
+    if (!assignable_roles.includes(rol)) {
+        throw new ServerError(
+            `No tienes permisos suficientes para crear un miembro con rol '${rol}'`,
+            403
+        )
+    }
+
+    const user_found = await user_repository.getByEmail(email)
+    if (!user_found) {
+        throw new ServerError("El usuario no existe", 404)
+    }
+
+    //Si ya tiene membresia en este workspace no se vuelve a agregar
+    const existing_membership = await member_repository.getMembershipByUserAndWorkspace(user_found._id, workspace_id)
+    if (existing_membership) {
+        throw new ServerError("El usuario ya es miembro de este espacio de trabajo", 409)
+    }
+
+    return await member_repository.create(user_found._id, workspace_id, rol)
 }
 
 /*

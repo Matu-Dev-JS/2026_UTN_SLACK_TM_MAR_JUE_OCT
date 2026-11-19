@@ -5,12 +5,16 @@ import ENVIRONMENT from '../config/environment.config.js'
 /*
 Middleware de Logger (Oficina de registro de consultas)
 Registra cada consulta que recibe el servidor en la coleccion RequestLog:
-IP, URL, endpoint, metodo, timestamp, status de respuesta, tiempo de ejecucion y user_id si requiere autenticacion.
+IP, user-agent, URL, endpoint, metodo, timestamp, status de respuesta, tiempo de ejecucion y user_id si requiere autenticacion.
 
 Body:
 - En consultas POST, PUT y DELETE se guarda el body CIFRADO con LOGGER_PRIVATE_KEY (AES-256-GCM)
-- Por seguridad NO se registra el body (queda en null) en login, registro y reset de contrasena
+- Por seguridad NO se registra el body (queda en null) en NINGUNA ruta bajo /api/auth
+  (login, register, forgot-password, reset-password, verify-email, etc.), porque transportan
+  credenciales, tokens de verificacion y tokens de restablecimiento
 - En consultas GET no se registra el body
+- En rutas sensibles tampoco se guarda la query string de la URL, porque puede incluir tokens
+  (por ejemplo /api/auth/verify-email?verification_token=...)
 
 El log se escribe en el evento 'finish' de la respuesta, es decir cuando ya fue enviada.
 En ese momento el middleware de auth ya corrio, por lo que si la consulta requería
@@ -20,12 +24,16 @@ autenticacion podemos guardar el user_id (req.user); en rutas publicas queda en 
 /* Metodos de escritura cuyos bodies se registran cifrados */
 const LOG_BODY_METHODS = new Set(['POST', 'PUT', 'DELETE'])
 
-/* Endpoints sensibles cuyo body NUNCA se registra, contengan credenciales o tokens */
-const LOG_BODY_EXCLUDED_ENDPOINTS = new Set([
-    '/api/auth/login',
-    '/api/auth/register',
-    '/api/auth/reset-password'
-])
+/* Largo maximo del User-Agent que guardamos, para evitar logs gigantes */
+const USER_AGENT_MAX_LENGTH = 512
+
+/*
+Rutas sensibles cuyo body NUNCA se registra, porque transportan credenciales o tokens.
+Se excluye todo el arbol /api/auth (login, register, forgot-password, reset-password,
+verify-email, resend, etc.), asi cualquier endpoint nuevo bajo esa ruta queda protegido
+sin necesidad de agregarlo a mano.
+*/
+const LOG_BODY_EXCLUDED_PREFIXES = ['/api/auth']
 
 /*
 Normaliza el path para compararlo contra la lista de exclusiones:
@@ -38,13 +46,22 @@ function normalizarPath (path) {
     return sin_slash_final.toLowerCase()
 }
 
+/* Indica si la ruta esta dentro de un prefijo sensible (/api/auth o /api/auth/...) */
+function esRutaSensible (path) {
+    const path_normalizado = normalizarPath(path)
+
+    return LOG_BODY_EXCLUDED_PREFIXES.some(prefijo => {
+        return path_normalizado === prefijo || path_normalizado.startsWith(prefijo + '/')
+    })
+}
+
 /* Decide si para esa consulta corresponde registrar el body cifrado */
 function shouldLogBody (metodo, path) {
     if (!LOG_BODY_METHODS.has(metodo)) {
         return false
     }
 
-    if (LOG_BODY_EXCLUDED_ENDPOINTS.has(normalizarPath(path))) {
+    if (esRutaSensible(path)) {
         return false
     }
 
@@ -55,7 +72,16 @@ function shouldLogBody (metodo, path) {
 let key_warning_emitido = false
 
 function obtenerBodyEncriptado (request) {
-    if (!shouldLogBody(request.method, request.path)) {
+    /*
+    IMPORTANTE: se usa request.originalUrl y NO request.path.
+    Express recorta el prefijo del router de req.url/req.path mientras la request esta
+    dentro de el (dentro de /api/auth, request.path vale '/login'), y lo restaura recien
+    al salir del router. El evento 'finish' se dispara cuando la response se envia, y en
+    un caso exitoso eso ocurre TODAVIA dentro del router. Usar request.path hacia que
+    /api/auth/login se comparara como '/login' y no coincidiera con la exclusion.
+    request.originalUrl nunca se modifica, asi que es la fuente confiable.
+    */
+    if (!shouldLogBody(request.method, request.originalUrl)) {
         return null
     }
 
@@ -90,10 +116,27 @@ function loggerMiddleware (request, response, next) {
             //Priorizamos la IP real detras de un proxy, si no hay usamos la de la conexion
             const ip = request.headers['x-forwarded-for']?.split(',')[0].trim() || request.ip
 
+            /*
+            originalUrl nunca cambia, pero puede traer query string.
+            Para el campo endpoint guardamos solo el path (sin query).
+            */
+            const ruta = request.originalUrl.split('?')[0]
+
+            /*
+            User-Agent del cliente. Se recorta para que un header gigante no engorde el log.
+            Si el cliente no lo envia, queda en null.
+            */
+            const user_agent_header = request.headers['user-agent']
+            const user_agent = user_agent_header
+                ? user_agent_header.slice(0, USER_AGENT_MAX_LENGTH)
+                : null
+
             RequestLog.create({
                 ip: ip,
-                url: request.originalUrl,
-                endpoint: request.path,
+                user_agent: user_agent,
+                //En rutas sensibles no guardamos la query string: puede traer tokens en la URL
+                url: esRutaSensible(ruta) ? ruta : request.originalUrl,
+                endpoint: ruta,
                 metodo: request.method,
                 fk_id_usuario: request.user?.id ?? null,
                 status_code: response.statusCode,

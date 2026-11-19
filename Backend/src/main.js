@@ -48,7 +48,7 @@ app.use(async (req, res, next) => {
 
 /*
 Middleware de Logger
-Registra cada consulta en la coleccion RequestLog (IP, URL, endpoint, metodo, timestamp, status, tiempo de ejecucion y user_id si requiere autenticacion)
+Registra cada consulta en la coleccion RequestLog (IP, User-Agent, URL, endpoint, metodo, timestamp, status, tiempo de ejecucion y user_id si requiere autenticacion)
 Se monta despues de la conexion a MongoDB y antes de los routers, para que el logger tenga acceso a la DB y pueda registrar todas las consultas
 */
 app.use(loggerMiddleware);
@@ -75,9 +75,20 @@ app.listen(
 /* 
 - Documentacion con swagger UI (Hecho)
 - Logger: Sirve para registrar el flujo de consultas del servidor (no vamos a registrar el body, si se quisiera podrian hacerlo pero encriptando)
-    HECHO parcialmente, se registran datos sensibles en rutas sensibles (register, login y reset-password)
+    HECHO: no se registra el body en ninguna ruta /api/auth (login, register, forgot-password, reset-password, verify-email) ni la query string de esas rutas
 
 - Whitelist/Blacklist 
+
+    Whitelist (Lista Blanca)
+        Permir ciertas IPs o dominios me consulten
+        Sirve cuando vos sabes que usuario exactamente o que usuarios van a consultar tu servicio
+            EJ: 
+                - Damos un servicio de informacion de cierto DNI, nuestros clientes compran el servicio para integrarlo en sus aplicaciones, nosotros cobramos por consulta (1000 = 10USD) entonces para seguridad del cliente le pedimos que nos proporcione las IPS desde las va a consultar. Guardamos esas IPs y cuando nos llegue la consulta a su nombre checkeamos que sea de la lista de IPs permitidas, si no lo es, rechazamos la consulta y no cobramos.
+
+    Blacklist (Lista Negra)
+        No permitir que ciertas IPs o dominios me consulten
+        Sirve cuando recibis ataques DDoS (Denegacion de servicio) junto con el logger podemos detectar IPs sospechosas y automaticamente sumarlas a una lista negras de IPS que ya no responderemos. Podemos marcar IPs bloqueadas temporales o definitivas
+
 - API keys
 - Rate limit
 - Manejo de archivos

@@ -44,6 +44,7 @@ function workspaceMiddleware(valid_roles) {
             )
         }
         request.workspace = workspace_selected
+        request.membership = membership
         next()
     }
 

@@ -5,7 +5,8 @@ import {
     getWorkspaceById,
     getWorkspaceMembers,
     deleteWorkspaceById,
-    updateWorkspaceById
+    updateWorkspaceById,
+    createWorkspaceMember
 } from '../controllers/workspace.controller.js'
 import authMiddleware from '../middlewares/auth.middleware.js'
 import workspaceMiddleware from '../middlewares/workspace.middleware.js'
@@ -414,6 +415,14 @@ workspace_router.get(
     workspaceMiddleware([]),
     getWorkspaceMembers
 )
+
+workspace_router.post(
+    '/:workspace_id/members',
+    authMiddleware,
+    workspaceMiddleware(['admin', 'owner']),
+    createWorkspaceMember
+)
+
 
 /**
  * @openapi

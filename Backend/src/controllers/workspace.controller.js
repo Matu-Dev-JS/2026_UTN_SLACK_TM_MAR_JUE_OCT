@@ -103,3 +103,25 @@ export async function updateWorkspaceById (request, response) {
         }
     })
 }
+
+
+export async function createWorkspaceMember (request, response){
+    const { email, rol } = request.body
+
+    //El servicio valida el rol permitido segun quien lo crea y que el usuario no sea ya miembro
+    const member_created = await workspace_services.createWorkspaceMember(
+        email,
+        request.workspace._id,
+        rol,
+        request.membership.rol
+    )
+
+    return response.status(201).send({
+        ok: true,
+        message: "Miembro creado correctamente",
+        status: 201,
+        data: {
+            member_created
+        }
+    })
+}

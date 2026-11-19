@@ -16,7 +16,6 @@ El body puede ser de distintos tipos de dato:
 
 export async function register(request, response) {
 
-    console.log("[REGISTER]", request.body)
     const { username, email, password } = request.body
 
     //Toda la logica de negocio vive en la capa de servicios
@@ -91,7 +90,7 @@ export async function resendVerificationEmail (request, response){
 
 export async function forgotPassword (request, response){
     const {email} = request.body
-    console.log("HOLA")
+
     //El servicio valida el email y decide si corresponde enviar el mail de restablecimiento
     await auth_services.forgotPassword(email)
 

@@ -14,7 +14,7 @@ Como desencriptar un body guardado en los logs:
     import { decryptLogBody } from '../utils/logger-crypto.util.js'
     const body = decryptLogBody('valor_base64_del_campo_body_encriptado')
 o por terminal (en la carpeta Backend):
-    node scripts/descifrar-log.js "valor_base64_del_campo_body_encriptado"
+    npm run descifrar-log:db -- <id_del_log>
 */
 
 function deriveKey() {

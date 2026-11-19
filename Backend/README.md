@@ -180,4 +180,16 @@ npm run dev    # modo desarrollo con --watch
 npm start      # producción
 ```
 
+### Script de logs (`LOGGER_PRIVATE_KEY`)
+
+Toma la clave del `.env`. No hace falta exportar nada a mano.
+
+```bash
+# Lista los logs que tienen body guardado
+npm run descifrar-log:db
+
+# Desencripta el body de un log puntual
+npm run descifrar-log:db -- 6afefc33b537f02fe3a25ee7
+```
+
 Variables de entorno requeridas en `.env` (ver `src/config/environment.config.js`): `MONGO_DB_URI`, `MONGO_DB_NAME`, `JWT_SECRET_KEY`, `GMAIL_USER`, `GMAIL_PASSWORD`, `URL_BACKEND`, `URL_FRONTEND`, `PORT` (y opcionalmente las de MySQL).

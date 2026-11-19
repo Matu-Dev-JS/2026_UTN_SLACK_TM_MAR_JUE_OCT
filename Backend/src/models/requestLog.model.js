@@ -4,13 +4,18 @@ import mongoose from 'mongoose'
 Modelo de log de consultas del servidor (Logger).
 Registra el flujo de consultas que recibe la API:
 IP, URL, endpoint, metodo, timestamp, status de respuesta y tiempo de ejecucion.
-IMPORTANTE: Nunca se guarda el body de la consulta.
+El body solo se guarda cifrado (AES-256-GCM) en POST/PUT/DELETE, y NUNCA en rutas
+bajo /api/auth ni en GET (ver logger.middleware.js).
 */
 const requestLog_schema = new mongoose.Schema(
     {
         ip: {
             type: String,
             required: true
+        },
+        user_agent: {
+            type: String,
+            default: null /* Navegador/cliente que hizo la consulta (header User-Agent). Se recorta a 512 caracteres */
         },
         url: {
             type: String,
