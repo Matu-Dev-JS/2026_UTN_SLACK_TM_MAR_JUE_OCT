@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from "react"
-import { useParams } from "react-router"
+import { Outlet, useParams } from "react-router"
 import useRequest from "../hooks/useRequest"
 import { getWorkspaceById, getWorkspaceMembers } from "../services/workspaceService"
 
@@ -14,7 +14,7 @@ Consulta dos apis:
 
 const WorkspaceContext = createContext(null)
 
-export function WorkspaceProvider({ children }) {
+export function WorkspaceProvider() {
 
     const { workspace_id } = useParams()
 
@@ -76,7 +76,7 @@ export function WorkspaceProvider({ children }) {
                 }
             }
         >
-            {children}
+            <Outlet/>
         </WorkspaceContext.Provider>
     )
 }

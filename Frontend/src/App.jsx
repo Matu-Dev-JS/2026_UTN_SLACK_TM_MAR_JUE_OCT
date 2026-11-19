@@ -11,6 +11,7 @@ import CreateWorkspaceScreen from './screens/CreateWorkspaceScreen/CreateWorkspa
 import WorkspaceScreen from './screens/WorkspaceScreen/WorkspaceScreen'
 import { WorkspaceProvider } from './Contexts/WorkspaceContext'
 import AuthMiddleware from './Middlewares/AuthMiddleware'
+import { ChannelContext, ChannelContextProvider } from './Contexts/ChannelContext'
 
 const App = () => {
   return (
@@ -29,14 +30,15 @@ const App = () => {
           path='/workspaces/new' 
           element={<CreateWorkspaceScreen/>}
         />
-        <Route 
-          path='/workspace/:workspace_id' 
-          element={
-            <WorkspaceProvider>
-              <WorkspaceScreen/>
-            </WorkspaceProvider>
+        <Route element={
+            <WorkspaceProvider/>
           }
-        />
+        >
+          <Route path='/workspace/:workspace_id' element={<WorkspaceScreen/>}/>
+          <Route element={<ChannelContextProvider/>}>
+            <Route path='/workspace/:workspace_id/:channel_id' element={<WorkspaceScreen/>}/>
+          </Route>
+        </Route>
 
       </Route>
       <Route path='/login' element={<LoginScreen/>}/>
