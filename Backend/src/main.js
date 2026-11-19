@@ -4,7 +4,7 @@ import connectMongoDB from "./config/mongo.config.js";
 
 
 import express from 'express'
-import errorHandlerMiddleware from "./middlewares/error.middleware.js";
+import errorHandlerMiddleware from "./middlewares/Error.middleware.js";
 import loggerMiddleware from "./middlewares/logger.middleware.js";
 import auth_router from "./routes/auth.router.js";
 import user_router from "./routes/user.router.js";
